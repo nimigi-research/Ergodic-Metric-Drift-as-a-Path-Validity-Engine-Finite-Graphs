@@ -1,0 +1,26 @@
+# ---- macOS system cruft ----
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+            # the file literally named "Icon\r" (Finder custom folder icons)
+._*          # AFP/AppleDouble resource forks
+
+# ---- OS-managed metadata on volumes ----
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# ---- Network share detritus ----
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# ---- Occasionally seen locals ----
+.localized

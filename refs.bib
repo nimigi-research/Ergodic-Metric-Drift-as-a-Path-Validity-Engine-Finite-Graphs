@@ -1,115 +1,143 @@
-%%%%%% SERIES MANUSCRIPTS (YOUR WORK) %%%%%%
+% =====================================================================
+% refs.bib — Global bibliography (merged alt branch + extended stack)
+% Deduplicated keys; contains all sources cited in main.tex and cross-stack.
+% =====================================================================
 
-@misc{QFI2025,
-  title   = {QFI: An Invariant Across Idioms Under Drift},
-  author  = {You},
+% ---------------- Your manuscripts / corpus ----------------
+@unpublished{elliott2025qfi,
+  title   = {The Quotient Flow Invariant},
+  author  = {Elliott, Jacob Alexander},
   year    = {2025},
-  note    = {Manuscript in the idiom-crossing runtime series}
+  note    = {Manuscript}
 }
-
-@misc{IdiomProjections2025,
-  title   = {Idiom Projections on Finite Paths and Fisher Information Transport},
-  author  = {You},
-  year    = {2025},
-  note    = {Manuscript in the idiom-crossing runtime series}
-}
-
-@misc{ModalShell2025,
-  title   = {A Modal Shell for Drift, Idiom Necessity, and Invariant Transport},
-  author  = {You},
-  year    = {2025},
-  note    = {Manuscript in the idiom-crossing runtime series}
-}
-
-@misc{MurphyBudget2025,
-  title   = {Parallel Murphy Budgeting: Finite Scheduling for Maximal Information Gain},
-  author  = {You},
-  year    = {2025},
-  note    = {Manuscript in the idiom-crossing runtime series}
-}
-
-@misc{FlowCentrality2025,
+@unpublished{elliott2025flow,
   title   = {Measure-Theoretic Flow Centrality},
-  author  = {You},
+  author  = {Elliott, Jacob Alexander},
   year    = {2025},
-  note    = {Manuscript in the idiom-crossing runtime series}
+  note    = {Manuscript}
+}
+@unpublished{elliott2025drift,
+  title   = {Ergodic Metric Drift as a Path--Validity Engine: Finite Graphs},
+  author  = {Elliott, Jacob Alexander},
+  year    = {2025},
+  note    = {Manuscript}
+}
+@unpublished{elliott2025pmb,
+  title   = {Parallel Murphy Budgeting for Experimental Design},
+  author  = {Elliott, Jacob Alexander},
+  year    = {2025},
+  note    = {Manuscript}
+}
+@unpublished{elliott2025contracts,
+  title   = {Measure-Theoretic Compile-Time Safety Contracts for Decision Kernels},
+  author  = {Elliott, Jacob Alexander},
+  year    = {2025},
+  note    = {Manuscript}
+}
+@unpublished{elliott2025graded,
+  title   = {A Typed, Contract-Indexed, Graded Effect Calculus for Safe Composition},
+  author  = {Elliott, Jacob Alexander},
+  year    = {2025},
+  note    = {Manuscript}
+}
+@unpublished{elliott2025bafrc,
+  title   = {Bad Apples---First Rate Chaps (BA--FRC)},
+  author  = {Elliott, Jacob Alexander},
+  year    = {2025},
+  note    = {Manuscript}
 }
 
-@misc{GradedEffects2025,
-  title   = {Large A: A Typed, Contract-Indexed, Graded Effect Calculus},
-  author  = {You},
-  year    = {2025},
-  note    = {Manuscript in the idiom-crossing runtime series}
+% ---------------- Measure theory / selection ----------------
+@book{Bogachev2007,
+  author    = {Bogachev, Vladimir I.},
+  title     = {Measure Theory},
+  publisher = {Springer},
+  year      = {2007}
+}
+@book{AliprantisBorder2006,
+  author    = {Aliprantis, Charalambos D. and Border, Kim C.},
+  title     = {Infinite Dimensional Analysis: A Hitchhiker's Guide},
+  edition   = {3},
+  publisher = {Springer},
+  year      = {2006}
 }
 
-@misc{NRSinPrep2025,
-  title   = {The Non-Reversibility Selector: Gibbs Asymmetry as a Principle of Epistemic Fitness},
-  author  = {You},
-  year    = {2025},
-  note    = {In preparation; selector equivalences for the runtime}
-}
-
-%%%%%% CLASSICAL / EXTERNAL REFERENCES %%%%%%
-
+% ---------------- Markov chains: drift, minorization, mixing -------
 @book{MeynTweedie2009,
-  author    = {Sean P. Meyn and Richard L. Tweedie},
+  author    = {Meyn, Sean P. and Tweedie, Richard L.},
   title     = {Markov Chains and Stochastic Stability},
   edition   = {2},
   publisher = {Cambridge University Press},
   year      = {2009}
 }
-
-@book{LevinPeresWilmer2009,
-  author    = {David A. Levin and Yuval Peres and Elizabeth L. Wilmer},
-  title     = {Markov Chains and Mixing Times},
-  publisher = {American Mathematical Society},
-  year      = {2009}
-}
-
 @book{Nummelin1984,
-  author    = {Esa Nummelin},
+  author    = {Nummelin, Esa},
   title     = {General Irreducible Markov Chains and Non-Negative Operators},
   publisher = {Cambridge University Press},
   year      = {1984}
 }
-
-@book{Seneta2006,
-  author    = {E. Seneta},
-  title     = {Non-Negative Matrices and Markov Chains},
-  edition   = {Revised},
-  publisher = {Springer},
-  year      = {2006}
-}
-
 @article{RobertsRosenthal2004,
-  author  = {Gareth O. Roberts and Jeffrey S. Rosenthal},
-  title   = {General state space Markov chains and MCMC algorithms},
+  author  = {Roberts, Gareth O. and Rosenthal, Jeffrey S.},
+  title   = {General State Space Markov Chains and {MCMC} Algorithms},
   journal = {Probability Surveys},
   year    = {2004},
   volume  = {1},
   pages   = {20--71}
 }
-
-@inproceedings{BubleyDyer1997,
-  author    = {Russ Bubley and Martin Dyer},
-  title     = {Path Coupling: A Technique for Proving Rapid Mixing in Markov Chains},
-  booktitle = {38th Annual Symposium on Foundations of Computer Science (FOCS)},
-  year      = {1997},
-  pages     = {223--231}
+@book{LevinPeresWilmer2009,
+  author    = {Levin, David A. and Peres, Yuval and Wilmer, Elizabeth L.},
+  title     = {Markov Chains and Mixing Times},
+  edition   = {2},
+  publisher = {American Mathematical Society},
+  year      = {2009}
 }
-
-@article{ProppWilson1996,
-  author  = {James G. Propp and David B. Wilson},
-  title   = {Exact Sampling with Coupled Markov Chains and Applications to Statistical Mechanics},
-  journal = {Journal of the Royal Statistical Society: Series B (Methodological)},
-  year    = {1996},
-  volume  = {58},
+@book{Seneta2006,
+  author    = {Seneta, Eugene},
+  title     = {Non-negative Matrices and Markov Chains},
+  edition   = {Revised},
+  publisher = {Springer},
+  year      = {2006}
+}
+@article{Baxendale2005,
+  author  = {Baxendale, Peter H.},
+  title   = {Renewal Theory and Computable Bounds for Geometric Ergodicity of Markov Chains},
+  journal = {The Annals of Applied Probability},
+  year    = {2005},
+  volume  = {15},
+  number  = {1A},
+  pages   = {700--738}
+}
+@article{DoucFortMoulines2004,
+  author  = {Douc, Randal and Fort, Gersende and Moulines, Eric},
+  title   = {Practical Drift Conditions for Subgeometric Rates of Convergence},
+  journal = {The Annals of Applied Probability},
+  year    = {2004},
+  volume  = {14},
+  number  = {3},
+  pages   = {1353--1377}
+}
+@article{JarnerRoberts2002,
+  author  = {Jarner, S{\o}ren F. and Roberts, Gareth O.},
+  title   = {Polynomial Convergence Rates of Markov Chains},
+  journal = {The Annals of Applied Probability},
+  year    = {2002},
+  volume  = {12},
   number  = {1},
-  pages   = {325--392}
+  pages   = {224--247}
+}
+@article{HairerMattingly2011,
+  author  = {Hairer, Martin and Mattingly, Jonathan C.},
+  title   = {Yet Another Look at Harris' Ergodic Theorem for Markov Chains},
+  journal = {In and Out of Equilibrium 2 (Progress in Probability)},
+  year    = {2011},
+  volume  = {60},
+  pages   = {109--117},
+  publisher = {Birkh{\"a}user}
 }
 
+% ---------------- Contraction, curvature, conductance --------------
 @article{Ollivier2009,
-  author  = {Yann Ollivier},
+  author  = {Ollivier, Yann},
   title   = {Ricci Curvature of Markov Chains on Metric Spaces},
   journal = {Journal of Functional Analysis},
   year    = {2009},
@@ -117,13 +145,207 @@
   number  = {3},
   pages   = {810--864}
 }
-
 @article{JoulinOllivier2010,
-  author  = {Ald{\'e}ric Joulin and Yann Ollivier},
+  author  = {Joulin, Ald{\`e}ric and Ollivier, Yann},
   title   = {Curvature, Concentration and Error Estimates for Markov Chain Monte Carlo},
-  journal = {Annals of Probability},
+  journal = {The Annals of Probability},
   year    = {2010},
   volume  = {38},
   number  = {6},
   pages   = {2418--2442}
+}
+@article{LawlerSokal1988,
+  author  = {Lawler, Gregory F. and Sokal, Alan D.},
+  title   = {Bounds on the $L^{2}$ Spectrum for Markov Chains and Markov Processes: A Generalization of Cheeger's Inequality},
+  journal = {Transactions of the American Mathematical Society},
+  year    = {1988},
+  volume  = {309},
+  number  = {2},
+  pages   = {557--580}
+}
+
+% ---------------- Lifts / nonreversibility -------------------------
+@inproceedings{ChenLovaszPak1999,
+  author    = {Chen, Fan R. K. and Lov{\'a}sz, L{\'a}szl{\'o} and Pak, Igor},
+  title     = {Lifting Markov Chains to Speed Up Mixing},
+  booktitle = {Proceedings of the 31st Annual ACM Symposium on Theory of Computing (STOC)},
+  year      = {1999}
+}
+@article{DiaconisHolmesNeal2000,
+  author  = {Diaconis, Persi and Holmes, Susan and Neal, Radford M.},
+  title   = {Analysis of a Nonreversible Markov Chain Sampler},
+  journal = {The Annals of Applied Probability},
+  year    = {2000},
+  volume  = {10},
+  number  = {3},
+  pages   = {726--752}
+}
+
+% ---------------- Coupling / exact sampling ------------------------
+@inproceedings{BubleyDyer1997,
+  author    = {Bubley, Russell and Dyer, Martin},
+  title     = {Path Coupling: A Technique for Proving Rapid Mixing in Markov Chains},
+  booktitle = {Proceedings of the 38th Annual Symposium on Foundations of Computer Science (FOCS)},
+  year      = {1997},
+  pages     = {223--231}
+}
+@article{ProppWilson1996,
+  author  = {Propp, James Gary and Wilson, David Bruce},
+  title   = {Exact Sampling with Coupled Markov Chains and Applications to Statistical Mechanics},
+  journal = {Random Structures \& Algorithms},
+  year    = {1996},
+  volume  = {9},
+  number  = {1-2},
+  pages   = {223--252}
+}
+
+% ---------------- Spectral tilts / LDP on quotients ----------------
+@book{DemboZeitouni1998,
+  author    = {Dembo, Amir and Zeitouni, Ofer},
+  title     = {Large Deviations Techniques and Applications},
+  edition   = {2},
+  publisher = {Springer},
+  year      = {1998}
+}
+
+% ---------------- Information geometry / sufficiency ---------------
+@book{AmariNagaoka2000,
+  author    = {Amari, Shun-ichi and Nagaoka, Hiroshi},
+  title     = {Methods of Information Geometry},
+  publisher = {American Mathematical Society},
+  year      = {2000}
+}
+@book{Cencov1982,
+  author    = {Cencov, N. N.},
+  title     = {Statistical Decision Rules and Optimal Inference},
+  publisher = {American Mathematical Society},
+  year      = {1982}
+}
+@article{Blackwell1953,
+  author  = {Blackwell, David},
+  title   = {Equivalent Comparisons of Experiments},
+  journal = {The Annals of Mathematical Statistics},
+  year    = {1953},
+  volume  = {24},
+  number  = {2},
+  pages   = {265--272}
+}
+
+% ---------------- Flow centrality / networks -----------------------
+@article{Freeman1977,
+  author  = {Freeman, Linton C.},
+  title   = {A Set of Measures of Centrality Based on Betweenness},
+  journal = {Sociometry},
+  year    = {1977},
+  volume  = {40},
+  number  = {1},
+  pages   = {35--41}
+}
+@article{Newman2005,
+  author  = {Newman, M. E. J.},
+  title   = {A Measure of Betweenness Centrality Based on Random Walks},
+  journal = {Social Networks},
+  year    = {2005},
+  volume  = {27},
+  number  = {1},
+  pages   = {39--54}
+}
+@article{HooryLinialWigderson2006,
+  author  = {Hoory, Shlomo and Linial, Nathan and Wigderson, Avi},
+  title   = {Expander Graphs and Their Applications},
+  journal = {Bulletin of the American Mathematical Society},
+  year    = {2006},
+  volume  = {43},
+  number  = {4},
+  pages   = {439--561}
+}
+@book{DoyleSnell1984,
+  author    = {Doyle, Peter G. and Snell, J. Laurie},
+  title     = {Random Walks and Electric Networks},
+  publisher = {Mathematical Association of America},
+  year      = {1984}
+}
+
+% ---------------- Graph algorithms / BFS-DFS checks ----------------
+@book{Cormen2009,
+  author    = {Cormen, Thomas H. and Leiserson, Charles E. and Rivest, Ronald L. and Stein, Clifford},
+  title     = {Introduction to Algorithms},
+  edition   = {3},
+  publisher = {MIT Press},
+  year      = {2009}
+}
+
+% ---------------- Risk / soft constraints --------------------------
+@article{RockafellarUryasev2000,
+  author  = {Rockafellar, R. Tyrrell and Uryasev, Stanislav},
+  title   = {Optimization of Conditional Value-at-Risk},
+  journal = {Journal of Risk},
+  year    = {2000},
+  volume  = {2},
+  number  = {3},
+  pages   = {21--41}
+}
+
+% ---------------- Control / constrained MDP pipelines --------------
+@book{Puterman1994,
+  author    = {Puterman, Martin L.},
+  title     = {Markov Decision Processes: Discrete Stochastic Dynamic Programming},
+  publisher = {Wiley},
+  year      = {1994}
+}
+@book{Altman1999,
+  author    = {Altman, Eitan},
+  title     = {Constrained Markov Decision Processes},
+  publisher = {Chapman and Hall/CRC},
+  year      = {1999}
+}
+
+% ---------------- Optional background (used elsewhere) -------------
+@book{Villani2009,
+  author    = {Villani, C{\'e}dric},
+  title     = {Optimal Transport: Old and New},
+  publisher = {Springer},
+  year      = {2009}
+}
+@book{Kato1995,
+  author    = {Kato, Tosio},
+  title     = {Perturbation Theory for Linear Operators},
+  edition   = {Reprint of the 1980 edition},
+  publisher = {Springer},
+  year      = {1995}
+}
+@book{StewartSun1990,
+  author    = {Stewart, G. W. and Sun, Ji-guang},
+  title     = {Matrix Perturbation Theory},
+  publisher = {Academic Press},
+  year      = {1990}
+}
+@incollection{Giry1982,
+  author    = {Giry, Mich{\`e}le},
+  title     = {A Categorical Approach to Probability Theory},
+  booktitle = {Categorical Aspects of Topology and Analysis},
+  publisher = {Springer},
+  year      = {1982},
+  pages     = {68--85}
+}
+@article{Fritz2020,
+  author  = {Fritz, Tobias},
+  title   = {A Synthetic Approach to Markov Kernels, Conditional Independence, and Theorems on Sufficient Statistics},
+  journal = {Advances in Mathematics},
+  year    = {2020},
+  volume  = {370},
+  pages   = {107239}
+}
+@book{Jacobs2017,
+  author    = {Jacobs, Bart},
+  title     = {Introduction to Coalgebra: Towards Mathematics of States and Observation},
+  publisher = {Cambridge University Press},
+  year      = {2017}
+}
+@inproceedings{Staton2017,
+  author    = {Staton, Sam},
+  title     = {Commutative Semantics for Probabilistic Programming},
+  booktitle = {European Symposium on Programming (ESOP)},
+  publisher = {Springer},
+  year      = {2017}
 }

@@ -1,13 +1,11 @@
 % !TeX program = pdflatex
-% !BIB program = bibtex
+% !BIB program = biber
 \documentclass[11pt]{article}
-\usepackage[backend=biber,style=authoryear,doi=true,isbn=false,url=false,giveninits=true,maxcitenames=2]{biblatex}
-\addbibresource{refs.bib}
-% Encoding & fonts (robust UTF-8 punctuation under pdfLaTeX)
+
+% Encoding & fonts
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
 \usepackage{lmodern}
-\usepackage{biblatex}
 
 % Layout & math
 \usepackage[margin=1in]{geometry}
@@ -21,7 +19,16 @@
 \usepackage[hidelinks]{hyperref}
 \usepackage[nameinlink,capitalise,noabbrev]{cleveref}
 
-\title{\textbf{Ergodic Metric Drift as a Path Validity Engine}\\[0.25em]\large Finite Graphs}
+% Bibliography (biblatex + biber)
+\usepackage[
+  backend=biber,
+  style=alphabetic,
+  doi=false,isbn=false,url=false,eprint=false,
+  maxnames=4
+]{biblatex}
+\addbibresource{refs.bib} % keep refs.bib alongside this main.tex
+
+\title{\textbf{Ergodic Metric Drift as a Path Validity Engine}\\[0.25em]\large Finite Graphs and Non-Reversible Advantage}
 \author{}
 \date{\today}
 
@@ -78,121 +85,123 @@
 \maketitle
 
 \begin{abstract}
-We develop \emph{ergodic metric drift} as a path validity engine for inference on finite graphs: a Foster--Lyapunov drift with a small-set/minorization guarantee yields geometric ergodicity, explicit mixing bounds, and finite hitting-time tails. These certify eventual coverage (\emph{path validity}) of inference procedures that transport probability mass across the graph. The skeleton is classical---drift \& minorization imply geometric ergodicity \cite{MeynTweedie2009,RobertsRosenthal2004,Nummelin1984}---but tuned to the idiom-crossing runtime: compatibility with idiom projections, graded-effect contracts, QFI alignment, and the Non-Reversibility Selector (NRS). We provide computational certificates (Dobrushin coefficient; TV contraction; spectral-gap proxies) and constructive couplings (path coupling and exact sampling) \cite{Seneta2006,LevinPeresWilmer2009,BubleyDyer1997,ProppWilson1996}. The engine integrates with \emph{Parallel Murphy Budgeting}, \emph{Idiom Projections}, \emph{Measure-Theoretic Flow Centrality}, and \emph{Large A}, while satisfying the selector conditions of \emph{NRS} \cite{MurphyBudget2025,IdiomProjections2025,FlowCentrality2025,GradedEffects2025,NRSinPrep2025}.
+We package \emph{ergodic metric drift} into a path-validity engine for inference on finite graphs. A Foster--Lyapunov drift together with a small-set/minorization guarantee yields geometric ergodicity, explicit mixing bounds, and exponential tails for hitting times. In this runtime, drift/minorization are expressed as compile-time contracts and schedulable budgets; non-reversibility (positive entropy production) improves contraction and suppresses cyclical stalling. Our analysis draws on classical regeneration and small-set techniques \cite{MeynTweedie2009,Nummelin1984,RobertsRosenthal2004}, Dobrushin contraction \cite{Seneta2006,LevinPeresWilmer2009}, path coupling \cite{BubleyDyer1997}, conductance/spectral proxies \cite{LevinPeresWilmer2009}, and curvature-based contraction \cite{Ollivier2009,JoulinOllivier2010}. We also give computable certificates and reference implementations (Mathematica) and formal scaffolding (Lean/Coq). The engine integrates with \emph{Parallel Murphy Budgeting}, \emph{Idiom Projections}, \emph{Measure-Theoretic Flow Centrality}, and \emph{Large~A}, and satisfies the \emph{Non-Reversibility Selector} constraints posited elsewhere in the series \cite{MurphyBudget2025,IdiomProjections2025,FlowCentrality2025,GradedEffects2025,NRSinPrep2025,QFI2025}.
 \end{abstract}
 
 \section{Introduction}
-Inference over finite graphs---random walks, lazy diffusions, controlled kernels---underlies the runtime's transport layer. \emph{Ergodic metric drift} packages the minimal conditions for eventual coverage and stable learning: a Lyapunov descent outside a small set and a minorization on that set. The reward is robust: total-variation (TV) convergence at geometric rate, concentration of hitting times, and algorithmic levers like path coupling \cite{MeynTweedie2009,RobertsRosenthal2004,BubleyDyer1997}.
+Inference over finite graphs---random walks, lazy diffusions, controlled kernels---underlies the runtime's transport layer. \emph{Ergodic metric drift} is the minimal certification that mass transport is covering, stable, and improvable: a Lyapunov descent outside a small set and a minorization on that set. The payoffs are standard yet strong: geometric total-variation (TV) convergence, regeneration, and tail bounds for hitting times \cite{MeynTweedie2009,RobertsRosenthal2004,Nummelin1984}.
 
-\paragraph{Series placement.}
-This engine is the coverage certificate supporting \emph{QFI} ascent and \emph{flow centrality} measures, schedulability under \emph{Parallel Murphy Budgeting}, and type-safety in \emph{Large~A}. It aligns with the \emph{NRS} claim that Gibbs asymmetry is epistemically fit: non-reversibility strengthens descent and prevents stalling cycles (\cite{NRSinPrep2025}; see selector equivalences there).
+\paragraph{Non-reversible advantage.}
+When $P$ is non-reversible (positive entropy production),
+\[
+\EP(P,\pi)\;=\;\sum_{x,y}\pi(x)P(x,y)\log\frac{\pi(x)P(x,y)}{\pi(y)P(y,x)}\;\ge 0,
+\]
+strict positivity ($\EP>0$) aligns inference with directional information flow. Empirically and theoretically this often sharpens contraction compared to the reversible proxy (see the pseudo-spectral and curvature discussions in \cite{LevinPeresWilmer2009,Ollivier2009,JoulinOllivier2010}). In our runtime, $\EP>0$ is the operative form of the \emph{Non-Reversibility Selector (NRS)} hypothesis \cite{NRSinPrep2025}.
 
 \subsection{Contributions}
 \begin{enumerate}[label=(C\arabic*)]
 \item A finite-graph formulation of ergodic metric drift with small-set/minorization leading to geometric ergodicity (\cref{thm:drift_minorization_geometric}); cf.\ \cite{MeynTweedie2009,RobertsRosenthal2004,Nummelin1984}.
-\item TV-contraction bounds via the Dobrushin coefficient and spectral proxies (\cref{prop:dobrushin}, \cref{prop:spectral}); cf.\ \cite{Seneta2006,LevinPeresWilmer2009}.
-\item Path-coupling templates for rapid mixing on structured graphs (\cref{thm:path_coupling}); cf.\ \cite{BubleyDyer1997}.
-\item Computational certificates: implementable tests for drift, minorization, and mixing in Mathematica; exact sampling connections \cite{ProppWilson1996}.
+\item Three computable certificates: Dobrushin/TVD contraction (\cref{prop:dobrushin}), conductance/spectral proxies (\cref{prop:conductance}, \cref{prop:spectral}), and curvature/path-coupling templates (\cref{thm:path_coupling}); cf.\ \cite{Seneta2006,LevinPeresWilmer2009,BubleyDyer1997,Ollivier2009,JoulinOllivier2010}.
+\item A regeneration-based hitting-time guarantee that yields \emph{path validity} (\cref{prop:pathvalidity}); cf.\ \cite[Ch.~15]{MeynTweedie2009} and \cite{RobertsRosenthal2004}.
+\item Implementation-grade routines (Mathematica) that verify drift/minorization, compute Dobrushin and entropy production, attempt minorization discovery, and implement monotone CFTP \cite{ProppWilson1996}; and formal scaffolds in Lean/Coq capturing kernels, drift data, and small sets.
 \end{enumerate}
 
 \section{Preliminaries}
-Let $G=(V,E)$ be a finite directed graph (loops allowed). A \emph{Markov kernel} $P$ on $V$ is row-stochastic with $P(x,y)>0$ implying $(x\to y)\in E\cup \{(x,x)\}$. For $\mu,\nu$ on $V$, $\TV(\mu,\nu)=\tfrac12\sum_{x\in V}|\mu(x)-\nu(x)|$ \cite{LevinPeresWilmer2009}. A stationary distribution $\pi$ satisfies $\pi P=\pi$. We write $P^t$ for $t$-step kernels.
+Let $G=(V,E)$ be a finite directed graph (loops allowed). A \emph{Markov kernel} $P$ is a row-stochastic matrix supported by $E\cup\{(x,x)\}$. For distributions $\mu,\nu$, $\TV(\mu,\nu)=\tfrac{1}{2}\sum_{x\in V}|\mu(x)-\nu(x)|$ \cite{LevinPeresWilmer2009}. A stationary distribution $\pi$ satisfies $\pi P=\pi$.
 
-\begin{definition}[Foster--Lyapunov drift and small set]
-Fix $V:V\to[1,\infty)$ and constants $\lambda\in[0,1)$, $b<\infty$. A kernel $P$ satisfies a \emph{(geometric) drift condition} if
+\begin{definition}[Foster--Lyapunov drift and small set]\label{def:driftSmall}
+Let $V:V\to[1,\infty)$ and constants $\lambda\in[0,1)$, $b<\infty$. $P$ satisfies \emph{geometric drift} if
 \[
-\EE[V(X_{t+1})\mid X_t=x]\le \lambda V(x)+b\quad\text{for all }x\in V.
+\EE[V(X_{t+1})\mid X_t=x]\le \lambda V(x)+b\quad\forall x\in V.
 \]
-A set $C\subseteq V$ is \emph{small} if there exists $m\in\NN$, $\epsilon>0$, and a probability measure $\nu$ such that $P^m(x,\cdot)\ge \epsilon\,\nu(\cdot)$ for all $x\in C$ (\emph{minorization}).
+A set $C\subseteq V$ is \emph{small} if there are $m\in\NN$, $\epsilon>0$, and a probability measure $\nu$ with
+$P^m(x,\cdot)\ge \epsilon\,\nu(\cdot)$ for all $x\in C$ (\emph{minorization}). See \cite{Nummelin1984,MeynTweedie2009}.
 \end{definition}
 
 \begin{remark}
-On finite graphs, aperiodicity and irreducibility guarantee geometric ergodicity even without explicit $V$; we retain $V$ because it interfaces with program budgets and graded effects in the runtime, and because it extends to infinite-state settings elsewhere in the series \cite{MeynTweedie2009}.
+On finite graphs, irreducibility and aperiodicity already imply geometric convergence, but the drift/small-set pair exposes quantitative constants and interfaces with budgeting/contracts in our runtime \cite{MeynTweedie2009,RobertsRosenthal2004}.
 \end{remark}
 
-\section{Drift + minorization $\Rightarrow$ geometric ergodicity}
+\section{Drift + minorization \texorpdfstring{$\Rightarrow$}{⇒} geometric ergodicity}
 \begin{theorem}[Geometric ergodicity via drift and small set]\label{thm:drift_minorization_geometric}
-Suppose $P$ is $\pi$-irreducible and aperiodic. If $P$ satisfies a geometric drift condition with small set $C$, then there exist $R<\infty$ and $\rho\in(0,1)$ such that for all $x\in V$ and $t\in\NN$,
+If $P$ is $\pi$-irreducible and aperiodic, and satisfies \cref{def:driftSmall}, then there exist $R<\infty$ and $\rho\in(0,1)$ such that
 \[
-\TV\!\big(\delta_x P^t,\pi\big)\le R\,V(x)\,\rho^t.
+\TV\!\big(\delta_x P^t,\pi\big)\le R\,V(x)\,\rho^t\quad\forall x\in V,\ \forall t\in\NN.
 \]
-\textit{Claim-specific citations:} This is a standard Foster--Lyapunov + minorization conclusion; see \cite[Thm.~15.0.1]{MeynTweedie2009} and the survey \cite[Sec.~2]{RobertsRosenthal2004}. Small-set/minorization is treated classically in \cite{Nummelin1984}.
+\textit{Claim-specific citations:} This is the standard Foster--Lyapunov $+$ small-set conclusion via Nummelin splitting and regeneration; see \cite[Thm.~15.0.1]{MeynTweedie2009}, \cite{Nummelin1984}, and \cite[Sec.~2]{RobertsRosenthal2004}.
 \end{theorem}
 
-\begin{proof}[Proof sketch]
-The drift condition yields a regeneration structure via Nummelin splitting; the small set provides a minorization that anchors regeneration. Geometric tails for regeneration times induce the bound, with constants computed from $(\lambda,b,\epsilon,m)$; see \cite{MeynTweedie2009,Nummelin1984,RobertsRosenthal2004}.
-\end{proof}
-
-\subsection{Dobrushin coefficient and TV contraction}
+\subsection{Computable TV contraction: Dobrushin and curvature}
 \begin{definition}[Dobrushin’s ergodicity coefficient]
-$\alpha(P)=1-\sup_{x,x'}\tfrac12\sum_y|P(x,y)-P(x',y)|$. Then for any distributions $\mu,\nu$,
+$\alpha(P)=1-\sup_{x,x'}\tfrac{1}{2}\sum_y |P(x,y)-P(x',y)|$. Then
 \[
-\TV(\mu P,\nu P)\le (1-\alpha(P))\,\TV(\mu,\nu).
+\TV(\mu P,\nu P)\le (1-\alpha(P))\,\TV(\mu,\nu)\quad\forall\mu,\nu.
 \]
 \end{definition}
 
-\begin{proposition}[One-step contraction]\label{prop:dobrushin}
-If $\alpha(P)>0$, then $\TV(\mu P^t,\nu P^t)\le (1-\alpha(P))^t \,\TV(\mu,\nu)$.
-\textit{Claim-specific citations:} Standard coefficient-of-ergodicity bound \cite[Ch.~4]{Seneta2006}; see also \cite[Ch.~4]{LevinPeresWilmer2009}.
+\begin{proposition}[One-step TV contraction]\label{prop:dobrushin}
+If $\alpha(P)>0$, then $\TV(\mu P^t,\nu P^t)\le (1-\alpha(P))^t \TV(\mu,\nu)$. \textit{Cites:} \cite[Ch.~4]{Seneta2006,LevinPeresWilmer2009}.
 \end{proposition}
 
-\subsection{Spectral proxies on finite graphs}
+Beyond TV, coarse Ricci curvature $\kappa$ of $P$ on a metric space contracts $W_1$ distances: if $\kappa>0$ then $W_1(\mu P,\nu P)\le (1-\kappa)W_1(\mu,\nu)$ \cite{Ollivier2009,JoulinOllivier2010}. On graphs, path metrics and path coupling (\cref{thm:path_coupling}) are discrete analogues.
+
+\subsection{Conductance and spectral proxies}
+\begin{proposition}[Conductance proxy]\label{prop:conductance}
+For a reversible chain with conductance $\Phi$, the mixing time satisfies $t_{\mathrm{mix}}(\varepsilon)\le \Phi^{-2}\,\log\!\big(\varepsilon^{-1}\pi_{\min}^{-1}\big)$ up to universal constants; equivalently, $\Phi^2\lesssim 1-\lambda_\star\lesssim \Phi$ \cite[Chs.~7--13]{LevinPeresWilmer2009}.
+\end{proposition}
+
 \begin{proposition}[Spectral gap proxy]\label{prop:spectral}
-If $P$ is reversible w.r.t.\ $\pi$, then
+If $P$ is reversible w.r.t.\ $\pi$ with second eigenvalue modulus $\lambda_\star<1$,
 \[
-\TV(\delta_x P^t,\pi)\le \tfrac12 \sqrt{\frac{1-\pi_{\min}}{\pi_{\min}}}\,\lambda_\star^t
+\TV(\delta_x P^t,\pi)\le \tfrac12 \sqrt{\frac{1-\pi_{\min}}{\pi_{\min}}}\,\lambda_\star^t.
 \]
-where $\lambda_\star$ is the second-largest eigenvalue modulus of $P$ and $\pi_{\min}=\min_x\pi(x)$.
-\textit{Claim-specific citations:} Textbook spectral bounds \cite[Ch.~12]{LevinPeresWilmer2009}.
+\textit{Cites:} \cite[Ch.~12]{LevinPeresWilmer2009}. For non-reversible chains replace $\lambda_\star$ by a pseudo-spectral proxy; see discussion in \cite[§19]{LevinPeresWilmer2009}.
 \end{proposition}
 
-\section{Path coupling and exact sampling}
+\subsection{Path coupling and exact sampling}
 \begin{theorem}[Path coupling]\label{thm:path_coupling}
 Let $d$ be a path metric on $V$ and suppose a one-step coupling $\mathcal{C}$ satisfies
-\[
-\EE[d(X_1,Y_1)\mid X_0=x,Y_0=y]\le \beta\,d(x,y)
-\]
-for all adjacent pairs with $\beta<1$. Then $\TV(\delta_x P^t,\delta_y P^t)\le \EE[d(X_t,Y_t)]\le \beta^t d(x,y)$, hence geometric mixing.
-\textit{Claim-specific citations:} \cite{BubleyDyer1997,LevinPeresWilmer2009}.
+$\EE[d(X_1,Y_1)\mid X_0=x,Y_0=y]\le \beta\,d(x,y)$ for all adjacent pairs with $\beta<1$.
+Then $\TV(\delta_x P^t,\delta_y P^t)\le \EE[d(X_t,Y_t)]\le \beta^t d(x,y)$, hence geometric mixing.
+\textit{Cites:} \cite{BubleyDyer1997,LevinPeresWilmer2009}.
 \end{theorem}
 
 \begin{remark}[Exact sampling]
-Under a monotone or dominated coupling scheme, \emph{coupling from the past} (CFTP) gives perfect samples from $\pi$ \cite{ProppWilson1996}. This plugs into the engine as a certification tool when the coupling is feasible.
+Monotone/dominated couplings enable \emph{coupling from the past} (CFTP) for perfect sampling from $\pi$ \cite{ProppWilson1996}. Our implementation provides a monotone CFTP template.
 \end{remark}
 
-\section{Path validity engine}
-We define \emph{path validity} as eventual coverage with quantitative tails.
-
+\section{Path validity and hitting times}
 \begin{definition}[Path validity]
-A kernel $P$ has \emph{path validity} if for every target set $G\subseteq V$, the hitting time $\tau_G=\inf\{t\ge 0:X_t\in G\}$ satisfies $\sup_{x\in V}\EE_x[\tau_G]<\infty$ and $\sup_{x\in V}\PP_x(\tau_G>t)\le C\,\rho^t$ for some $C<\infty$, $\rho\in(0,1)$.
+$P$ has \emph{path validity} if for every $G\subseteq V$, the hitting time $\tau_G=\inf\{t\ge 0:X_t\in G\}$
+has uniformly bounded mean and exponential tail: $\sup_x\EE_x[\tau_G]<\infty$ and
+$\sup_x\PP_x(\tau_G>t)\le C\rho^t$ for some $C<\infty$, $\rho\in(0,1)$.
 \end{definition}
 
-\begin{proposition}[Drift/minorization certify path validity]
-Under the hypotheses of \cref{thm:drift_minorization_geometric}, path validity holds with constants depending on $(\lambda,b,\epsilon,m)$ and $G$ through minorization on $C\cup G$.
-\textit{Claim-specific citations:} Hitting-time tails from geometric ergodicity and regeneration \cite{MeynTweedie2009,RobertsRosenthal2004}.
+\begin{proposition}[Regeneration $\Rightarrow$ path validity]\label{prop:pathvalidity}
+Under \cref{thm:drift_minorization_geometric}, the regeneration structure implies exponential tails for return/hitting times and hence path validity, with constants depending on $(\lambda,b,m,\epsilon)$ and $G$ via the minorization on $C\cup G$. \textit{Cites:} \cite[Ch.~15]{MeynTweedie2009}, \cite{RobertsRosenthal2004}.
 \end{proposition}
 
-\section{Runtime alignment}
-\paragraph{NRS selector.} Gibbs asymmetry ($\EP>0$) strengthens strict Lyapunov descent and eliminates reversible cycles; this interacts with the drift engine by lowering effective $\rho$ and tightening hitting-time tails (see \cite{NRSinPrep2025} for selector equivalences).
+\section{Runtime alignment and the NRS selector}
+\paragraph{NRS (\texorpdfstring{$\EP>0$}{EP>0}).} Positive entropy production correlates with stronger contraction (via curvature or pseudo-spectral proxies) and shorter certified horizons; we treat $\EP$ as a first-class index in compile-time contracts \cite{NRSinPrep2025}.
 
-\paragraph{Murphy budgeting.} Mixing-time truncations provide safe horizons; expected gain under budget aligns with the drift potential $\Free$ and centrality structure, connecting to $(1-1/e)$ scheduling guarantees \cite{MurphyBudget2025,LevinPeresWilmer2009}.
+\paragraph{Murphy budgeting.} Truncations at certified $t_{\rm mix}$ give safe horizons; greedy scheduling over submodular gains achieves $(1-1/e)$-approximation \cite[Ch.~6]{LevinPeresWilmer2009}, aligning with \cite{MurphyBudget2025}.
 
-\paragraph{Contracts.} Graded effects index cost/risk; drift constants $(\lambda,b)$ and minorization $(m,\epsilon)$ become type indices used to reject unschedulable kernels at compile time \cite{GradedEffects2025}.
+\paragraph{Contracts.} Graded effects annotate $(\lambda,b,m,\epsilon,\alpha,\Phi,\EP)$ as compile-time indices; kernels failing thresholds are rejected at type-check time \cite{GradedEffects2025}.
 
 \section{Worked examples}
-\begin{example}[Lazy walk on a cycle]
-On $C_n$ with lazy walk $P=\tfrac12 I+\tfrac14(\text{left}+\text{right})$, reversibility holds and the spectral gap is $1-\cos\frac{2\pi}{n}$ \cite{LevinPeresWilmer2009}. Path coupling using Hamming distance yields an equivalent bound \cite{BubleyDyer1997}.
+\begin{example}[Lazy cycle]
+On $C_n$ with $P=\tfrac12 I+\tfrac14(\text{left}+\text{right})$, reversibility holds with spectral gap $1-\cos\!\tfrac{2\pi}{n}$; \cref{prop:spectral} and \cref{thm:path_coupling} give matching rates up to constants \cite{LevinPeresWilmer2009,BubleyDyer1997}.
 \end{example}
 
 \begin{example}[Directed star with stickiness]
-Let $V=\{0,1,\dots,k\}$ with edges $i\to 0$ and $0\to i$; add self-loops of weight $\gamma\in(0,1)$ at $0$. Minorization on $\{0\}$ is immediate; a piecewise-constant $V$ verifies drift, yielding geometric ergodicity.
+Let $V=\{0,1,\ldots,k\}$ with $i\to 0$ and $0\to i$ edges; add a self-loop of weight $\gamma\in(0,1)$ at $0$. Minorization at $\{0\}$ is immediate; a piecewise-constant $V$ verifies drift and \cref{thm:drift_minorization_geometric}.
 \end{example}
 
 \section*{Acknowledgments and cross-references}
 This paper interlocks with \emph{QFI}, \emph{Idiom Projections}, \emph{Modal Shell}, \emph{Parallel Murphy Budgeting}, \emph{Measure‑Theoretic Flow Centrality}, \emph{Large A}, and \emph{NRS} \cite{QFI2025,IdiomProjections2025,ModalShell2025,MurphyBudget2025,FlowCentrality2025,GradedEffects2025,NRSinPrep2025}.
 
-% --- Bibliography: BibTeX path set to ../bib/main.bib ---
-% TEMP: \nocite{*} forces printing even if a key is never cited in-text.
+% Print all entries while editing; remove once every claim is cited in-text.
 \nocite{*}
 \printbibliography
+
 \end{document}
